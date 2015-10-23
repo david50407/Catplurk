@@ -1,0 +1,46 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Both of these are needed -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">#cf682f</item>
+        <item name="colorPrimaryDark">#b65217</item>
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppTheme.Base">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="AppTheme.ButtonView" parent="android:style/Widget.ImageButton"></style>
+
+    <style name="AppTheme.IconView" parent="AppTheme.ButtonView">
+        <item name="android:layout_height">@dimen/icon_text_height</item>
+        <item name="android:layout_marginStart">-8dp</item>
+        <item name="android:layout_marginEnd">-8dp</item>
+        <item name="android:layout_marginTop">-8dp</item>
+        <item name="android:layout_marginBottom">-8dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:gravity">center</item>
+        <item name="android:focusable">false</item>
+        <item name="android:drawablePadding">@dimen/icon_text_padding</item>
+        <item name="android:textSize">@dimen/text_secondary_size</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="android:color">?android:textColorSecondary</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="itvIconWidth">@dimen/card_actions_area_icon_size</item>
+        <item name="itvIconHeight">@dimen/card_actions_area_icon_size</item>
+    </style>
+
+    <style name="AppTheme.Timeline.Time" parent="android:style/Widget.TextView">
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textSize">@dimen/text_tertiary_size</item>
+    </style>
+
+</resources>

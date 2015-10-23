@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_plurk_detail">Plurk Detail</string>
+    <string name="title_timeline">時間軸</string>
+    <string name="title_login">登入</string>
+
+    <string name="not_implement_yet">看來我們還沒實作這個功能 :(</string>
+
+    <string name="add_account">新增帳戶</string>
+    <string name="add_account_description">加入新的噗浪帳戶</string>
+    <string name="manage_account">管理帳戶</string>
+
+    <string name="please_wait">請稍候…</string>
+
+    <string name="tip_swipe_down_to_refresh">下拉載入</string>
+
+    <string name="error_unknown_error">Unknown error.</string>
+    <string name="error_ssl_error">SSL error.</string>
+    <string name="error_network_error">Network error.</string>
+    <string name="error_api_data_corrupted">API data corrupted.</string>
+
+    <string name="gap_load_more">載入更多</string>
+</resources>

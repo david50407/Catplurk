@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="plurk_unread_text">@color/md_white_1000</color>
+    <color name="plurk_unread_ribbon">@color/md_red_A700</color>
+    <color name="plurk_unread_ribbon_under">@color/md_red_900</color>
+
+    <color name="plurk_read_text">@color/md_grey_800</color>
+    <color name="plurk_read_ribbon">@color/md_grey_50</color>
+    <color name="plurk_read_ribbon_under">@color/md_grey_400</color>
+
+    <color name="plurk_muted_text">@color/md_grey_600</color>
+    <color name="plurk_muted_ribbon">@color/md_blue_grey_50</color>
+    <color name="plurk_muted_ribbon_under">@color/md_grey_400</color>
+
+    <color name="timeline_date_header_background_color">#dfb65217</color>
+</resources>

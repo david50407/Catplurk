@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- inherit from md_ -->
+    <color name="md_blue_grey_50">#ECEFF1</color>
+</resources>

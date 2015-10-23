@@ -1,0 +1,113 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlurkDetailActivity"
+    tools:ignore="MergeRootFrame">
+    <View android:id="@+id/flexible_space"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/flexible_space_height"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"/>
+    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+        <RelativeLayout
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.CardView android:id="@+id/cardview"
+                android:elevation="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/flexible_card_top_margin"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                card_view:cardCornerRadius="2dp">
+                <TextView android:id="@+id/plurk_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"/>
+            </android.support.v7.widget.CardView>
+            <FrameLayout android:id="@+id/plurk_detail_container"
+                android:layout_below="@+id/cardview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+    <android.support.v7.widget.Toolbar android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:clipToPadding="false"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:contentInsetStart="@dimen/toolbar_margin_start" />
+    <RelativeLayout android:id="@+id/flexible_space_layout"
+        android:elevation="@dimen/elevation_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/basic_margin_start"
+        android:paddingEnd="16dp">
+        <LinearLayout android:id="@+id/profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:descendantFocusability="blocksDescendants">
+            <FrameLayout
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginEnd="4dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="8dp">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/dummy_image"
+                    app:border_width="2dp"
+                    app:border_color="#FFFFFF"/>
+            </FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+                <TextView android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/detail_plurk_user_size_actionbar" />
+                <TextView android:id="@+id/qualifier"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:textColorSecondaryInverse"
+                    android:textSize="@dimen/detail_plurk_qualifier_size_actionbar" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/flexible_space_height"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>
+

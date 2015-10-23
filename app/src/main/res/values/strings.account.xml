@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_in_method_introduction">How it works?</string>
+    <string name="sign_in_method_introduction_detail">Most clients opens a webpage to authorize to Plurk.
+        \nThis could be inconvenient on low quality network so CatPlurk simulates a normal browser to help sign in to Plurk.
+        \n
+        \nDon\'t worry, your password will never be stored nor leaked. :)
+    </string>
+    <string name="error_already_logged_in">You have already logged in.</string>
+    <string name="error_wrong_username_password">Wrong username/password.</string>
+</resources>

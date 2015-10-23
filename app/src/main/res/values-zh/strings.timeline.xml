@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_item_all">所有訊息</string>
+    <string name="drawer_item_unread">未讀訊息</string>
+    <string name="drawer_item_my">我發表的訊息</string>
+    <string name="drawer_item_private">私人訊息</string>
+    <string name="drawer_item_responded">回應過的訊息</string>
+    <string name="drawer_item_liked_and_replurked">喜歡 &amp; 轉噗訊息</string>
+
+    <string name="drawer_item_settings">設定</string>
+</resources>

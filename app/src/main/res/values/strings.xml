@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">CatPlurk</string>
+    <string name="title_plurk_detail">Plurk Detail</string>
+    <string name="title_timeline">Timeline</string>
+    <string name="title_login">Login</string>
+
+    <string name="not_implement_yet">Oops. Not implement yet.</string>
+
+    <string name="add_account">Add Account</string>
+    <string name="add_account_description">Add new Plurk account</string>
+    <string name="manage_account">Manage Account</string>
+
+    <string name="please_wait">Please Wait…</string>
+
+    <string name="tip_swipe_down_to_refresh">Swipe down to refresh</string>
+
+    <string name="error_unknown_error">Unknown error.</string>
+    <string name="error_ssl_error">SSL error.</string>
+    <string name="error_network_error">Network error.</string>
+    <string name="error_api_data_corrupted">API data corrupted.</string>
+
+    <string name="gap_load_more">Load more</string>
+
+    <string name="format_error_message">Error: <xliff:g id="message">%s</xliff:g></string>
+    <string name="format_error_action_message">Error while <xliff:g id="action">%1$s</xliff:g>: <xliff:g id="message">%2$s</xliff:g></string>
+
+    <string name="service_refresh">Refresh Service</string>
+
+    <string name="provider_data">CatPlurk Data Provider</string>
+</resources>

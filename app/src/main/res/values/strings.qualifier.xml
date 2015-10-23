@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qualifier_freestyle">:</string>
+    <string name="qualifier_loves"    >loves</string>
+    <string name="qualifier_likes"    >likes</string>
+    <string name="qualifier_shares"   >shares</string>
+    <string name="qualifier_gives"    >gives</string>
+    <string name="qualifier_hates"    >hates</string>
+    <string name="qualifier_wants"    >wants</string>
+    <string name="qualifier_wishes"   >wishes</string>
+    <string name="qualifier_needs"    >needs</string>
+    <string name="qualifier_will"     >will</string>
+    <string name="qualifier_hopes"    >hopes</string>
+    <string name="qualifier_asks"     >asks</string>
+    <string name="qualifier_has"      >has</string>
+    <string name="qualifier_was"      >was</string>
+    <string name="qualifier_wonders"  >wonders</string>
+    <string name="qualifier_feels"    >feels</string>
+    <string name="qualifier_thinks"   >thinks</string>
+    <string name="qualifier_says"     >says</string>
+    <string name="qualifier_is"       >is</string>
+    <string name="qualifier_whispers" >whispers</string>
+</resources>

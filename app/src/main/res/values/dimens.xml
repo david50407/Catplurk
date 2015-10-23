@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="basic_margin_start">@dimen/spacing_large</dimen>
+    <dimen name="basic_margin_end">@dimen/spacing_large</dimen>
+    <dimen name="toolbar_margin_start">72dp</dimen>
+
+    <dimen name="icon_text_padding">@dimen/spacing_normal</dimen>
+    <dimen name="icon_text_height">40dp</dimen>
+
+    <dimen name="flexible_space_height">168dp</dimen>
+    <dimen name="flexible_card_top">112dp</dimen>
+    <dimen name="flexible_card_top_margin">120dp</dimen> <!-- 112 + 8 -->
+
+    <dimen name="detail_plurk_user_profile_size">32dp</dimen>
+    <dimen name="detail_plurk_user_profile_size_actionbar">48dp</dimen>
+
+    <dimen name="detail_plurk_user_size">16sp</dimen>
+    <dimen name="detail_plurk_user_size_actionbar">18sp</dimen>
+    <dimen name="detail_plurk_qualifier_size_actionbar">14sp</dimen>
+
+    <dimen name="text_primary_size">16sp</dimen>
+    <dimen name="text_secondary_size">14sp</dimen>
+    <dimen name="text_tertiary_size">12sp</dimen>
+
+    <dimen name="card_padding">@dimen/spacing_normal</dimen>
+    <dimen name="card_half_padding">@dimen/spacing_small</dimen>
+    <dimen name="card_ribbon_top_padding">-5dp</dimen>
+    <dimen name="card_area_padding">@dimen/spacing_large</dimen>
+    <dimen name="card_time_padding">@dimen/spacing_large</dimen>
+    <dimen name="timeline_time_margin">@dimen/spacing_minus_mlarge</dimen>
+    <dimen name="card_primary_area_height">72dp</dimen>
+    <dimen name="card_actions_area_padding">@dimen/spacing_normal</dimen>
+    <dimen name="card_actions_area_icon_size">24dp</dimen>
+
+    <dimen name="card_plurk_replurk_icon_size">16dp</dimen>
+    <dimen name="card_plurk_replurk_icon_padding_start">40dp</dimen> <!-- 72 - 16 - 16 -->
+
+    <dimen name="ribbon_start_padding">@dimen/spacing_normal</dimen>
+    <dimen name="ribbon_end_padding">@dimen/spacing_xlarge</dimen>
+
+    <dimen name="card_gap_height">48dp</dimen>
+
+    <dimen name="avatar_padding">@dimen/spacing_normal</dimen>
+    <dimen name="avatar_text_padding_start">72dp</dimen>
+</resources>

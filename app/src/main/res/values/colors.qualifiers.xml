@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="qualifier_freestyle">#212121</color>
+    <color name="qualifier_loves"    >#b20c0c</color>
+    <color name="qualifier_likes"    >#cb2728</color>
+    <color name="qualifier_shares"   >#a74949</color>
+    <color name="qualifier_gives"    >#620e0e</color>
+    <color name="qualifier_hates"    >#111111</color>
+    <color name="qualifier_wants"    >#8db241</color>
+    <color name="qualifier_wishes"   >#5bb017</color>
+    <color name="qualifier_needs"    >#7a9a37</color>
+    <color name="qualifier_will"     >#b46db9</color>
+    <color name="qualifier_hopes"    >#e05be9</color>
+    <color name="qualifier_asks"     >#8361bc</color>
+    <color name="qualifier_has"      >#777777</color>
+    <color name="qualifier_was"      >#525252</color>
+    <color name="qualifier_wonders"  >#2e4e9e</color>
+    <color name="qualifier_feels"    >#2d83be</color>
+    <color name="qualifier_thinks"   >#689cc1</color>
+    <color name="qualifier_says"     >#e2560b</color>
+    <color name="qualifier_is"       >#e57c43</color>
+    <color name="qualifier_whispers" >#32007e</color>
+
+    <color name="qualifier_dark_freestyle">#000000</color>
+    <color name="qualifier_dark_loves"    >#8f0909</color>
+    <color name="qualifier_dark_likes"    >#a31f20</color>
+    <color name="qualifier_dark_shares"   >#863b3b</color>
+    <color name="qualifier_dark_gives"    >#4f0b0b</color>
+    <color name="qualifier_dark_hates"    >#000000</color>
+    <color name="qualifier_dark_wants"    >#728f34</color>
+    <color name="qualifier_dark_wishes"   >#498e12</color>
+    <color name="qualifier_dark_needs"    >#637d2c</color>
+    <color name="qualifier_dark_will"     >#915895</color>
+    <color name="qualifier_dark_hopes"    >#b549bc</color>
+    <color name="qualifier_dark_asks"     >#6a4e97</color>
+    <color name="qualifier_dark_has"      >#606060</color>
+    <color name="qualifier_dark_was"      >#424242</color>
+    <color name="qualifier_dark_wonders"  >#253f80</color>
+    <color name="qualifier_dark_feels"    >#246a99</color>
+    <color name="qualifier_dark_thinks"   >#547d9b</color>
+    <color name="qualifier_dark_says"     >#b64508</color>
+    <color name="qualifier_dark_is"       >#b96436</color>
+    <color name="qualifier_dark_whispers" >#280066</color>
+</resources>

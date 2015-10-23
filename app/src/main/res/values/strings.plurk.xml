@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="plurk_loading_replurker">Loading replurker profile…</string>
+    <string name="plurk_has_been_replurked">%s replurked</string>
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drawer_item_all">All Plurks</string>
+    <string name="drawer_item_unread">Unread Plurks</string>
+    <string name="drawer_item_my">My Plurks</string>
+    <string name="drawer_item_private">Private Plurks</string>
+    <string name="drawer_item_responded">Responded</string>
+    <string name="drawer_item_liked_and_replurked">Liked &amp; Replurked</string>
+
+    <string name="drawer_item_settings">Settings</string>
+</resources>

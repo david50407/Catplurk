@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="username">帳號</string>
+    <string name="password">密碼</string>
+    <string name="register">註冊</string>
+    <string name="sign_in">登入</string>
+    <string name="sign_in_method_introduction">這是怎麼運作的？</string>
+    <string name="sign_in_method_introduction_detail">大部分的應用程式都是以開啓網頁進行登入噗浪。
+        \n但在較差的網路環境中開啓網頁會比較不流暢，所以 CatPlurk 模擬了瀏覽器的行為來協助您登入。
+        \n
+        \n別擔心，你的帳號密碼並不會被保存或泄漏。 :)
+    </string>
+    <string name="error_already_logged_in">重複登入</string>
+    <string name="error_wrong_username_password">帳號或密碼錯誤</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="qualifier_freestyle">:</string>
+    <string name="qualifier_loves"    >愛</string>
+    <string name="qualifier_likes"    >喜歡</string>
+    <string name="qualifier_shares"   >分享</string>
+    <string name="qualifier_gives"    >給</string>
+    <string name="qualifier_hates"    >討厭</string>
+    <string name="qualifier_wants"    >想要</string>
+    <string name="qualifier_wishes"   >期待</string>
+    <string name="qualifier_needs"    >需要</string>
+    <string name="qualifier_will"     >打算</string>
+    <string name="qualifier_hopes"    >希望</string>
+    <string name="qualifier_asks"     >問</string>
+    <string name="qualifier_has"      >已經</string>
+    <string name="qualifier_was"      >曾經</string>
+    <string name="qualifier_wonders"  >好奇</string>
+    <string name="qualifier_feels"    >覺得</string>
+    <string name="qualifier_thinks"   >想</string>
+    <string name="qualifier_says"     >說</string>
+    <string name="qualifier_is"       >正在</string>
+    <string name="qualifier_whispers" >偷偷說</string>
+</resources>

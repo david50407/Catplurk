@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IconTextView">
+        <attr name="itvActivatedColor" format="color" />
+        <attr name="itvDisabledColor" format="color" />
+        <attr name="itvIconWidth" format="dimension" />
+        <attr name="itvIconHeight" format="dimension" />
+        <attr name="itvIconicsIcon" format="string" />
+    </declare-styleable>
+</resources>

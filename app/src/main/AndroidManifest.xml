@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="tw.catcafe.catplurk.android" >
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:name=".Application" >
+        <service android:name=".service.AccountAuthenticatorService"
+            android:exported="false" android:process=":auth" >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".TimelineActivity"
+            android:label="@string/title_timeline"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="tw.catcafe.catplurk.android.TIMELINE" />
+                <category android:name="ANDROID.INTENT.CATEGORY.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.AccountLoginActivity"
+            android:label="@string/title_login"
+            android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <action android:name="tw.catcafe.catplurk.android.ACCOUNT_LOGIN" />
+                <category android:name="ANDROID.INTENT.CATEGORY.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PlurkDetailActivity"
+            android:label=""
+            android:parentActivityName=".TimelineActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".TimelineActivity" />
+        </activity>
+
+        <service
+            android:name=".service.RefreshService"
+            android:label="@string/service_refresh"/>
+
+        <provider
+            android:name=".provider.CatPlurkDataProvider"
+            android:authorities="catplurk"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:label="@string/provider_data"
+            tools:ignore="ExportedContentProvider"/>
+    </application>
+</manifest>

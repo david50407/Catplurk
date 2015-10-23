@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.Qualifier.freestyle" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_freestyle</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_freestyle</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.loves" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_loves</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_loves</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.likes" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_likes</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_likes</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.shares" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_shares</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_shares</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.gives" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_gives</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_gives</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.hates" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_hates</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_hates</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.wants" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_wants</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_wants</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.wishes" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_wishes</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_wishes</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.needs" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_needs</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_needs</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.will" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_will</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_will</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.hopes" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_hopes</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_hopes</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.asks" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_asks</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_asks</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.has" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_has</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_has</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.was" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_was</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_was</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.wonders" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_wonders</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_wonders</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.feels" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_feels</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_feels</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.thinks" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_thinks</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_thinks</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.says" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_says</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_says</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.is" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_is</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_is</item>
+    </style>
+
+    <style name="AppTheme.Qualifier.whispers" parent="AppTheme">
+        <item name="colorPrimary"    >@color/qualifier_whispers</item>
+        <item name="colorPrimaryDark">@color/qualifier_dark_whispers</item>
+    </style>
+
+</resources>

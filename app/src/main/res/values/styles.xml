@@ -5,8 +5,8 @@
         <!-- Both of these are needed -->
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="colorPrimary">#cf682f</item>
-        <item name="colorPrimaryDark">#b65217</item>
+        <item name="colorPrimary">@color/plurk_theme_color</item>
+        <item name="colorPrimaryDark">@color/plurk_theme_color_dark</item>
     </style>
 
     <!-- Application theme. -->
@@ -14,7 +14,9 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="AppTheme.ButtonView" parent="android:style/Widget.ImageButton"></style>
+    <style name="AppTheme.ButtonView" parent="android:style/Widget.ImageButton">
+
+    </style>
 
     <style name="AppTheme.IconView" parent="AppTheme.ButtonView">
         <item name="android:layout_height">@dimen/icon_text_height</item>

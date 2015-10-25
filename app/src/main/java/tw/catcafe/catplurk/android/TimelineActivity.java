@@ -48,9 +48,7 @@ public class TimelineActivity extends AppCompatActivity
     @Bind(R.id.actionbar)
     Toolbar actionbar;
     @Bind(R.id.fab)
-    com.melnykov.fab.FloatingActionButton mFab;
-    @Bind(R.id.fab2)
-    android.support.design.widget.FloatingActionButton mFab2;
+    android.support.design.widget.FloatingActionButton mFab;
     Drawer navigation;
 
     protected long mActivatedAccountId;
@@ -207,7 +205,7 @@ public class TimelineActivity extends AppCompatActivity
         return mActivatedAccountId;
     }
 
-    @OnClick(R.id.fab2)
+    @OnClick(R.id.fab)
     void onFabClick() {
     }
 }

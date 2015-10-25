@@ -2,6 +2,7 @@
 <resources>
     <color name="plurk_theme_color">#cf682f</color>
     <color name="plurk_theme_color_dark">#b65217</color>
+    <color name="fab_ripple">#66333333</color>
 
     <color name="plurk_unread_text">@color/md_white_1000</color>
     <color name="plurk_unread_ribbon">@color/md_red_A700</color>

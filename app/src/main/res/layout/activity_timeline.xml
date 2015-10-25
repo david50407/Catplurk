@@ -37,31 +37,17 @@
         android:name="tw.catcafe.catplurk.android.fragment.TimelineFragment"
         tools:layout="@layout/fragment_plurk_list" />
 
-    <com.melnykov.fab.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/icon_star"
-        app:fab_colorNormal="#b65217"
-        app:fab_colorPressed="#b65217"
-        app:fab_colorRipple="#cf682f" />
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/icon_star"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/icon_talk"
         app:borderWidth="0dp"
         app:fabSize="normal"
-        app:rippleColor="@color/primary" />
+        app:rippleColor="@color/fab_ripple" />
 </RelativeLayout>

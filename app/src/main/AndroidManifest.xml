@@ -36,7 +36,8 @@
         <activity
             android:name=".TimelineActivity"
             android:label="@string/title_timeline"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="tw.catcafe.catplurk.android.TIMELINE" />
                 <category android:name="ANDROID.INTENT.CATEGORY.DEFAULT" />

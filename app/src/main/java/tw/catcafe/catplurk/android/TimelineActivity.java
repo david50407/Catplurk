@@ -2,9 +2,13 @@ package tw.catcafe.catplurk.android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
 
+import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -48,8 +52,11 @@ public class TimelineActivity extends AppCompatActivity
     @Bind(R.id.actionbar)
     Toolbar actionbar;
     @Bind(R.id.fab)
-    android.support.design.widget.FloatingActionButton mFab;
+    FloatingActionButton mFab;
+    @Bind(R.id.bottomsheet)
+    BottomSheetLayout mBottomSheetLayout;
     Drawer navigation;
+    View mSheetView;
 
     protected long mActivatedAccountId;
 
@@ -68,6 +75,9 @@ public class TimelineActivity extends AppCompatActivity
         ButterKnife.bind(this);
         setSupportActionBar(actionbar);
 
+        mSheetView = LayoutInflater
+                .from(this)
+                .inflate(R.layout.sheet_plurk_editor, mBottomSheetLayout, false);
 
         final AccountHeader accountHeader = buildAccountHeader(savedInstanceState);
         navigation = buildDrawer(accountHeader);
@@ -205,7 +215,17 @@ public class TimelineActivity extends AppCompatActivity
         return mActivatedAccountId;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mBottomSheetLayout.isSheetShowing()) {
+            mBottomSheetLayout.dismissSheet();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @OnClick(R.id.fab)
     void onFabClick() {
+        mBottomSheetLayout.showWithSheetView(mSheetView);
     }
 }

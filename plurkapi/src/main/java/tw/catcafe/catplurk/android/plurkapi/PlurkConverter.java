@@ -35,10 +35,12 @@ import tw.catcafe.catplurk.android.plurkapi.auth.OAuthToken;
 import tw.catcafe.catplurk.android.plurkapi.model.Plurk;
 import tw.catcafe.catplurk.android.plurkapi.model.ProfileResponse;
 import tw.catcafe.catplurk.android.plurkapi.model.ResponseCode;
+import tw.catcafe.catplurk.android.plurkapi.model.ResponsesResponse;
 import tw.catcafe.catplurk.android.plurkapi.model.TimelinePlurksResponse;
 import tw.catcafe.catplurk.android.plurkapi.model.User;
 import tw.catcafe.catplurk.android.plurkapi.model.Wrapper;
 import tw.catcafe.catplurk.android.plurkapi.model.impl.ProfileResponseImpl;
+import tw.catcafe.catplurk.android.plurkapi.model.impl.ResponsesResponseImpl;
 import tw.catcafe.catplurk.android.plurkapi.model.impl.TimelinePlurksResponseImpl;
 
 /**
@@ -50,6 +52,7 @@ public class PlurkConverter implements Converter {
     static {
         TypeConverterMapper.register(TimelinePlurksResponse.class, TimelinePlurksResponseImpl.class);
         TypeConverterMapper.register(ProfileResponse.class, ProfileResponseImpl.class);
+        TypeConverterMapper.register(ResponsesResponse.class, ResponsesResponseImpl.class);
 
         LoganSquare.registerTypeConverter(Date.class, new PlurkDateConverter());
         LoganSquare.registerTypeConverter(Plurk.Commentable.class, EnumIntegerConverter.get(Plurk.Commentable.class));

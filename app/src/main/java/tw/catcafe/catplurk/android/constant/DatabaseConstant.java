@@ -5,7 +5,7 @@ package tw.catcafe.catplurk.android.constant;
  */
 public interface DatabaseConstant {
     String DATABASE_NAME = "catplurk.sqlite";
-    int DATABASE_VERSION = 2;
+    int DATABASE_VERSION = 3;
 
     //region Table Ids
     int TABLE_ID_ACCOUNTS = 1;

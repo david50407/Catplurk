@@ -391,4 +391,100 @@ public interface CatPlurkDataStore {
                 TYPE_BOOLEAN     , TYPE_INT, TYPE_TEXT, TYPE_TEXT   , TYPE_INT     , TYPE_INT    ,
                 TYPE_TEXT, TYPE_INT, TYPE_DOUBLE_NOT_NULL, TYPE_INT , TYPE_INT    , TYPE_TEXT };
     }
+
+
+    interface Responses extends BaseColumns {
+        String TABLE_NAME = "responses";
+        String CONTENT_PATH = TABLE_NAME;
+        Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, CONTENT_PATH);
+
+        //region Column name
+        /**
+         * Account ID of the Plurk.<br />
+         * Type: INTEGER (long)
+         */
+        String ACCOUNT_ID = "account_id";
+
+        /**
+         * ID of the Plurk this response belongs to.<br />
+         * Type: INTEGER (long)
+         */
+        String PLURK_ID = "plurk_id";
+
+        /**
+         * ID of the user posted this response.<br />
+         * Type: INTEGER (long)
+         */
+        String USER_ID = "user_id";
+
+        /**
+         * ID of the response.<br />
+         * Type: INTEGER (long)
+         */
+        String RESPONSE_ID = "response_id";
+
+        /**
+         * Language of this response.<br />
+         * Type: TEXT
+         */
+        String LANG = "lang";
+
+        /**
+         * The English qualifier.<br />
+         * Type: TEXT NOT NULL
+         */
+        String QUALIFIER = "qualifier";
+
+        /**
+         * The translated qualifier.<br />
+         * Only set if the language is not English.<br />
+         * Type: TEXT
+         */
+        String QUALIFIER_TRANSLATED = "qualifier_translated";
+
+        /**
+         * The date this plurk was posted.<br />
+         * Type: INTEGER (long)
+         */
+        String POSTED = "posted";
+
+        /**
+         * The formatted content, emoticons and images will be turned into HTML tags.<br />
+         * Type: TEXT NOT NULL
+         */
+        String CONTENT = "content";
+
+        /**
+         * The raw content as user entered it.<br />
+         * Type: TEXT NOT NULL
+         */
+        String CONTENT_RAW = "content_raw";
+
+        /**
+         * The anonymous unique identifier of this response.<br />
+         * Type: TEXT
+         */
+        String HANDLE = "handle";
+
+        /**
+         * Specifics if this anonymous response is posted by current user.<br/>
+         * Type: INTEGER (boolean)
+         */
+        String MY_ANONYMOUS = "my_anonymous";
+
+        /**
+         * Set to 1 if the response is a gap.<br />
+         * Type: INTEGER (boolean)
+         */
+        String IS_GAP = "is_gap";
+        //endregion Column name
+
+        String[] COLUMNS = {_ID             , ACCOUNT_ID, PLURK_ID, LANG     , QUALIFIER         ,
+                QUALIFIER_TRANSLATED, POSTED  , CONTENT            , CONTENT_RAW      , HANDLE   ,
+                MY_ANONYMOUS, IS_GAP      };
+
+        String[] TYPES   = {TYPE_PRIMARY_KEY, TYPE_INT  , TYPE_INT, TYPE_TEXT, TYPE_TEXT_NOT_NULL,
+                TYPE_TEXT           , TYPE_INT, TYPE_TEXT_NOT_NULL, TYPE_TEXT_NOT_NULL, TYPE_TEXT,
+                TYPE_TEXT   , TYPE_BOOLEAN};
+    }
 }

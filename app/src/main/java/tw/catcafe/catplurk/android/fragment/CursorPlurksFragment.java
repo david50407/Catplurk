@@ -52,7 +52,7 @@ public abstract class CursorPlurksFragment extends AbsPlurksFragment<List<Parcel
     }
 
     @Override
-    public boolean getPlurks(long accountId, long offset, long limit, long latestId, long sinceId) {
+    public boolean getPlurks(long accountId, long offset, long limit, long latestId) {
         return false;
     }
 
@@ -145,18 +145,18 @@ public abstract class CursorPlurksFragment extends AbsPlurksFragment<List<Parcel
         AsyncManager.runBackgroundTask(new TaskRunnable<Object, long[], CursorPlurksFragment>() {
             @Override
             public long[] doLongOperation(Object o) throws InterruptedException {
-                final long[] result = new long[5];
+                final long[] result = new long[4];
                 result[0] = getAccountId();
                 final long[] oldestPlurkIdAndTime = getOldestPlurkIdAndTime(result[0]);
                 result[1] = oldestPlurkIdAndTime[1];
                 result[3] = oldestPlurkIdAndTime[0];
-                result[2] = result[4] = -1;
+                result[2] = -1;
                 return result;
             }
 
             @Override
             public void callback(CursorPlurksFragment fragment, long[] result) {
-                fragment.getPlurks(result[0], result[1], result[2], result[3], result[4]);
+                fragment.getPlurks(result[0], result[1], result[2], result[3]);
             }
         }.setResultHandler(this));
     }
@@ -167,17 +167,15 @@ public abstract class CursorPlurksFragment extends AbsPlurksFragment<List<Parcel
         AsyncManager.runBackgroundTask(new TaskRunnable<Object, long[], CursorPlurksFragment>() {
             @Override
             public long[] doLongOperation(Object o) throws InterruptedException {
-                final long[] result = new long[5];
+                final long[] result = new long[4];
                 result[0] = getAccountId();
-                final long[] newestPlurkIdAndTime = getNewestPlurkIdAndTime(result[0]);
                 result[1] = result[2] = result[3] = -1;
-                result[4] = newestPlurkIdAndTime[0];
                 return result;
             }
 
             @Override
             public void callback(CursorPlurksFragment fragment, long[] result) {
-                fragment.getPlurks(result[0], result[1], result[2], result[3], result[4]);
+                fragment.getPlurks(result[0], result[1], result[2], result[3]);
             }
         }.setResultHandler(this));
         return true;

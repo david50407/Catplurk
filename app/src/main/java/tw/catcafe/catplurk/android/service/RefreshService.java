@@ -68,9 +68,8 @@ public class RefreshService extends Service implements IntentConstant, CatPlurkC
 
     //region Refresh
     private boolean getHomeTimeline(final long accountId, final long offset, final long limit,
-                                    final long latestId, final long sinceId) {
-        return mPlurkWrapper.getTimelineAsync(accountId, offset, limit,
-        latestId, sinceId);
+                                    final long latestId) {
+        return mPlurkWrapper.getTimelineAsync(accountId, offset, limit, latestId);
     }
     //endregion Refresh
 

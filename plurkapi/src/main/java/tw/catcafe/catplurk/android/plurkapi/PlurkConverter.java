@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import tw.catcafe.catplurk.android.plurkapi.auth.OAuthToken;
 import tw.catcafe.catplurk.android.plurkapi.model.Plurk;
@@ -196,9 +197,13 @@ public class PlurkConverter implements Converter {
 
     public static class PlurkDateConverter extends DateTypeConverter {
         // Fri, 05 Jun 2009 23:07:13 GMT
-        final private DateFormat mDateFormat = new SimpleDateFormat("ccc, dd LLL yyyy HH:mm:ss 'GMT'", Locale.US);
+        final static DateFormat mDateFormat = new SimpleDateFormat("ccc, dd LLL yyyy HH:mm:ss 'GMT'", Locale.US);
+        static {
+            mDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        }
 
         public PlurkDateConverter() {
+
         }
 
         public DateFormat getDateFormat() {
@@ -207,6 +212,8 @@ public class PlurkConverter implements Converter {
     }
 
     public static class UnsupportedTypeException extends UnsupportedOperationException {
+        private static final long serialVersionUID = -7548468674021391028L;
+
         public UnsupportedTypeException(Type type) {
             super("Unsupported type " + type);
         }

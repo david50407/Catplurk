@@ -51,10 +51,10 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
 
     //region APIs
     public boolean getTimelineAsync(final long accountId, final long offset, final long limit,
-                                    final long latestId, final long sinceId) {
+                                    final long latestId) {
         mAsyncTaskManager.cancel(mGetTimelineTaskId);
         final GetHomeTimelineTask task = new GetHomeTimelineTask(accountId, offset, limit,
-                latestId, sinceId);
+                latestId);
         mGetTimelineTaskId = mAsyncTaskManager.add(task, true);
         return true;
     }
@@ -75,8 +75,8 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
     class GetHomeTimelineTask extends GetPlurksTask {
 
         public GetHomeTimelineTask(final long accountId, final long offset, final long limit,
-                                   final long latestId, final long sinceId) {
-            super(accountId, offset, limit, latestId, sinceId, TASK_TAG_GET_TIMELINE);
+                                   final long latestId) {
+            super(accountId, offset, limit, latestId, TASK_TAG_GET_TIMELINE);
         }
 
         @Override
@@ -108,14 +108,13 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
 
     abstract class GetPlurksTask extends ManagedAsyncTask<Object, PlurkApiListResponse<Plurk>, List<PlurkListResponse>> {
 
-        private final long mAccountId, mOffset, mLimit, mLatestId, mSinceId;
+        private final long mAccountId, mOffset, mLimit, mLatestId;
 
         public GetPlurksTask(final long account_id, final long offset, final long limit,
-                             final long latestId, final long sinceId, final String tag) {
+                             final long latestId, final String tag) {
             super(mContext, mAsyncTaskManager, tag);
             mAccountId = account_id;
             mLatestId = latestId;
-            mSinceId = sinceId;
             mOffset = offset;
             mLimit = limit;
         }
@@ -126,8 +125,8 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
         @NonNull
         protected abstract Uri getDatabaseUri();
 
-        private void storePlurk(final long accountId, final List<Plurk> plurks, final long maxId,
-                                final boolean truncated, final boolean notify) {
+        private void storePlurk(final long accountId, final List<Plurk> plurks,
+                                final boolean notify) {
             if (plurks == null || plurks.isEmpty() || accountId <= 0) {
                 return;
             }
@@ -135,6 +134,7 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
             final boolean noItemsBefore = DatabaseUtils.getPlurkCountInDatabase(mContext, uri, accountId) <= 0;
             final ContentValues[] values = new ContentValues[plurks.size()];
             final long[] plurkIds = new long[plurks.size()];
+            // turn plurk into ContentValue and find out oldest id
             long minId = -1;
             int minIdx = -1;
             {
@@ -151,25 +151,31 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
                 }
             }
             // Delete all rows conflicting before new data inserted.
-            // This will be done by notify receiver in SQLite
+            // But this will be done by notify receiver in SQLite.
             final Expression accountWhere = Expression.equals(Plurks.ACCOUNT_ID, accountId);
             final Expression statusWhere = Expression.in(new Columns.Column(Plurks.PLURK_ID), new RawItemArray(plurkIds));
             final String countWhere = Expression.and(accountWhere, statusWhere).getSQL();
             final String[] projection = {SQLFunctions.COUNT()};
-            final int rowsDeleted;
             final Cursor countCur = mResolver.query(uri, projection, countWhere, null, null);
-            if (countCur.moveToFirst()) {
-                rowsDeleted = countCur.getInt(0);
-            } else {
-                rowsDeleted = 0;
-            }
+            final int rowsDeleted = countCur.moveToFirst() ? countCur.getInt(0) : 0;
             countCur.close();
 
+            // Find minId in Database to check if gap is needed.
+            boolean needGap = true;
+            if (minId > 0) {
+                final Cursor minCur = mResolver.query(uri, projection,
+                        Expression.and(accountWhere, Expression.and(
+                                        Expression.equals(Plurks.PLURK_ID, minId),
+                                        Expression.equals(Plurks.IS_GAP, 0))).getSQL(),
+                        null, null);
+                needGap = !minCur.moveToFirst() || minCur.getInt(0) > 0;
+                minCur.close();
+            }
+
             // Insert a gap.
-            final boolean deletedOldGap = rowsDeleted > 0 && ArrayUtils.contains(plurkIds, maxId);
             final boolean noRowsDeleted = rowsDeleted == 0;
-            final boolean insertGap = minId > 0 && (noRowsDeleted || deletedOldGap) && !truncated
-                    && !noItemsBefore && plurks.size() > 1;
+            final boolean insertGap = minId > 0 && noRowsDeleted && !noItemsBefore &&
+                    plurks.size() > 1 && needGap;
             if (insertGap && minIdx != -1) {
                 values[minIdx].put(Plurks.IS_GAP, true);
             }
@@ -233,8 +239,9 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
                 final List<Plurk> plurks = new ArrayList<>();
                 final List<User> plurkUsers = new ArrayList<>();
                 final TimelinePlurksResponse apiResponse = getPlurks(plurkApi, paging);
-                final boolean truncated = truncateApiResponse(apiResponse, plurks, plurkUsers, mSinceId);
-                storePlurk(mAccountId, plurks, mLatestId, truncated, true);
+                plurks.addAll(apiResponse.getPlurks());
+                plurkUsers.addAll(apiResponse.getPlurkUsers().values());
+                storePlurk(mAccountId, plurks, true);
                 storeUser(mAccountId, plurkUsers, true);
                 publishProgress(new PlurkListResponse(mAccountId, plurks));
             } catch (final PlurkException e) {
@@ -242,34 +249,6 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
                 result.add(new PlurkListResponse(mAccountId, e));
             }
             return result;
-        }
-
-        public boolean truncateApiResponse(final TimelinePlurksResponse res,
-                                           final List<Plurk> plurks,
-                                           final List<User> users,
-                                           final long sinceId) {
-            if (res == null) return false;
-            if (sinceId == -1) {
-                plurks.addAll(res.getPlurks());
-                users.addAll(res.getPlurkUsers().values());
-                return false;
-            }
-            plurks.addAll(Observable.from(res.getPlurks())
-                    .filter(plurk -> plurk.getPlurkId() > sinceId)
-                    .toList()
-                    .toBlocking()
-                    .single());
-            if (res.getPlurks().size() != plurks.size()) {
-//                users.addAll(Observable.from(plurks)
-//                        .map(plurk -> res.getPlurkUsers().get(ParseUtil.parseString(plurk.getOwnerId())))
-//                        .toList()
-//                        .toBlocking()
-//                        .single());
-                users.addAll(res.getPlurkUsers().values());
-            } else {
-                users.addAll(res.getPlurkUsers().values());
-            }
-            return res.getPlurks().size() != plurks.size();
         }
     }
     //endregion Tasks

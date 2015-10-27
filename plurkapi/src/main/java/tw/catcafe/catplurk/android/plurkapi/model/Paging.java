@@ -13,7 +13,7 @@ import java.util.TimeZone;
 public class Paging extends SimpleValueMap {
     static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
     static {
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     //region Setter

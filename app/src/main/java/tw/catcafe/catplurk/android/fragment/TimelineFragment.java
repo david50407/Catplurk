@@ -29,10 +29,10 @@ public class TimelineFragment extends CursorPlurksFragment {
     }
 
     @Override
-    public boolean getPlurks(long accountId, long offset, long limit, long latestId, long sinceId) {
+    public boolean getPlurks(long accountId, long offset, long limit, long latestId) {
         final AsyncPlurkWrapper plurkWrapper = getPlurkWrapper();
         if (plurkWrapper == null) return false;
         // if (offset == -1) return plurkWrapper.refreshAll(accountId);
-        return plurkWrapper.getTimelineAsync(accountId, offset, limit, latestId, sinceId);
+        return plurkWrapper.getTimelineAsync(accountId, offset, limit, latestId);
     }
 }

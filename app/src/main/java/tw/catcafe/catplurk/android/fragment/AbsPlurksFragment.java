@@ -8,6 +8,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.squareup.otto.Bus;
@@ -86,7 +87,7 @@ public abstract class AbsPlurksFragment<Data> extends ContentRecyclerViewFragmen
     protected abstract long getAccountId();
     protected abstract boolean hasMoreData(Data data);
 
-    public abstract boolean getPlurks(long accountId, long offset, long limit, long latestId, long sinceId);
+    public abstract boolean getPlurks(long accountId, long offset, long limit, long latestId);
 
     protected abstract Loader<Data> onCreatePlurksLoader(final Context context, final Bundle args,
                                                            final boolean fromUser);
@@ -183,11 +184,11 @@ public abstract class AbsPlurksFragment<Data> extends ContentRecyclerViewFragmen
     @Override
     public void onGapClick(GapViewHolder holder, int position) {
         final AbsPlurkAdapter<Data> adapter = getAdapter();
-        final ParcelablePlurk plurk = adapter.getPlurk(position);
+        final ParcelablePlurk plurk = adapter.getPlurk(position - 1);
         final long accountId = plurk.accountId;
         final long offset = plurk.posted.getTime();
         final long id = plurk.plurkId;
-        getPlurks(accountId, offset, -1, id, -1);
+        getPlurks(accountId, offset, -1, id);
     }
 
     @Override

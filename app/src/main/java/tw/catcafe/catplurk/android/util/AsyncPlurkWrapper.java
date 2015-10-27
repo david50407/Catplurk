@@ -31,6 +31,7 @@ import tw.catcafe.catplurk.android.plurkapi.model.User;
 import tw.catcafe.catplurk.android.provider.CatPlurkDataStore.*;
 import tw.catcafe.catplurk.android.task.ManagedAsyncTask;
 import tw.catcafe.catplurk.android.util.message.GetPlurksTaskEvent;
+import tw.catcafe.catplurk.android.util.message.PlurkUserUpdatedEvent;
 
 /**
  * @author Davy
@@ -201,7 +202,13 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
         @SafeVarargs
         @Override
         protected final void onProgressUpdate(PlurkApiListResponse<Plurk>... values) {
-//            AsyncTaskUtils.executeTask(new CacheUsersStatusesTask(mContext), values);
+            final List<Plurk> valueList = Observable.from(values)
+                    .map(SingleResponse::getData)
+                    .flatMap(Observable::from)
+                    .toList()
+                    .toBlocking()
+                    .single();
+            AsyncTaskUtils.executeTask(new GetReplurkerTask(mAccountId), valueList);
         }
 
         @Override
@@ -247,6 +254,78 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
             } catch (final PlurkException e) {
                 Log.w(LOGTAG, e);
                 result.add(new PlurkListResponse(mAccountId, e));
+            }
+            return result;
+        }
+    }
+
+    class GetReplurkerTask extends ManagedAsyncTask<List<Plurk>, PlurkApiListResponse<Plurk>, List<User>> {
+
+        private final long mAccountId;
+
+        public GetReplurkerTask(final long account_id) {
+            super(mContext, mAsyncTaskManager, null);
+            mAccountId = account_id;
+        }
+
+        private void storeUser(final long accountId, final List<User> users, final boolean notify) {
+            if (users == null || users.isEmpty() || accountId <= 0) return;
+            final Uri uri = Users.CONETNT_URI;
+            final ContentValues[] values = Observable.from(users)
+                    .map((user) -> ContentValueCreator.createUser(user, accountId))
+                    .toList()
+                    .toBlocking()
+                    .single()
+                    .toArray(new ContentValues[users.size()]);
+            final Uri insertUri = UriUtils.appendQueryParameters(uri, QUERY_PARAM_NOTIFY, notify);
+            ContentResolverUtils.bulkInsert(mResolver, insertUri, values);
+        }
+
+        @SafeVarargs
+        @Override
+        protected final void onProgressUpdate(PlurkApiListResponse<Plurk>... values) {
+        }
+
+        @Override
+        protected void onPostExecute(List<User> result) {
+            super.onPostExecute(result);
+            final Bus bus = Application.getInstance(mContext).getMessageBus();
+            assert bus != null;
+            bus.post(new PlurkUserUpdatedEvent());
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            final Bus bus = Application.getInstance(mContext).getMessageBus();
+            assert bus != null;
+            bus.post(new PlurkUserUpdatedEvent());
+        }
+
+        @Override
+        protected List<User> doInBackground(final List<Plurk>... params) {
+            if (mAccountId == -1) return null;
+            final PlurkApi plurkApi = PlurkAPIFactory.getPlurkApiInstance(mContext, mAccountId);
+            if (plurkApi == null) return null;
+            final List<User> result = new ArrayList<>();
+            for (List<Plurk> plurks : params) {
+                final List<Long> replurkerIds = Observable.from(plurks)
+                        .filter(plurk -> plurk.getReplurkerId() > 0)
+                        .map(Plurk::getReplurkerId)
+                        .distinct()
+                        .toList()
+                        .toBlocking()
+                        .single();
+                for (long id : replurkerIds) {
+                    try {
+                        final User user = plurkApi.getPublicProfile(id, true, false).getUserInfo();
+                        if (user == null) continue;
+                        result.add(user);
+                    } catch (final PlurkException e) {
+                        Log.w(LOGTAG, e);
+                    }
+                }
+                storeUser(mAccountId, result, true);
             }
             return result;
         }

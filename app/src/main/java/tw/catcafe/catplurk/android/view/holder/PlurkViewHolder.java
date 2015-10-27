@@ -44,7 +44,7 @@ public class PlurkViewHolder extends RecyclerView.ViewHolder {
     @Bind(R.id.replurk_container)
     LinearLayout replurkContainer;
     @Bind(R.id.replurker)
-    TextView replurker;
+    TextView mReplurker;
     @Bind(R.id.profile_image)
     CircleImageView profileImage;
     @Bind(R.id.profile_nickname)
@@ -97,11 +97,12 @@ public class PlurkViewHolder extends RecyclerView.ViewHolder {
 
     public void displayPlurk(final Context context, final Plurk plurk) {
         final Application application = Application.getInstance(context);
-        if (plurk.getReplurked()) {
+        if (plurk.getReplurkerId() > 0) {
             replurkContainer.setVisibility(View.VISIBLE);
-            // TODO: Replurker
-            // replurker.setText(String.format(template_plurk_has_been_replurked, plurk.getReplurker().displayName));
-            replurker.setText(String.format(template_plurk_has_been_replurked, "Replurker Testing"));
+            User replurker = findUserInDatabase(context, plurk.getAccountId(), plurk.getReplurkerId());
+            if (replurker != null) {
+                mReplurker.setText(String.format(template_plurk_has_been_replurked, replurker.getDisplayName()));
+            }
         } else {
             replurkContainer.setVisibility(View.GONE);
         }

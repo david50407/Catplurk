@@ -51,6 +51,10 @@ public class PlurkException extends Exception {
         }
     }
 
+    public RestHttpResponse getResponse() {
+        return response;
+    }
+
     @Override
     public String getMessage() {
         if (statusCode != -1)

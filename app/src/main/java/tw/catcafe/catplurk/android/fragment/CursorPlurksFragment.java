@@ -27,6 +27,7 @@ import tw.catcafe.catplurk.android.support.loader.ObjectCursorLoader;
 import tw.catcafe.catplurk.android.util.message.AccountChangedEvent;
 import tw.catcafe.catplurk.android.util.message.GetPlurksTaskEvent;
 import tw.catcafe.catplurk.android.util.message.PlurkListChangedEvent;
+import tw.catcafe.catplurk.android.util.message.PlurkUserUpdatedEvent;
 
 import static tw.catcafe.catplurk.android.util.DatabaseUtils.getOldestPlurkPostIdAndTimeFromDatabase;
 import static tw.catcafe.catplurk.android.util.DatabaseUtils.getNewestPlurkPostIdAndTimeFromDatabase;
@@ -193,10 +194,9 @@ public abstract class CursorPlurksFragment extends AbsPlurksFragment<List<Parcel
         public void notifyGetPlurksTaskChanged(GetPlurksTaskEvent event) {
             if (!event.uri.equals(getContentUri())) return;
             setRefreshing(event.running);
-            if (!event.running) {
+            if (!event.running)
                 setLoadMoreIndicatorVisible(false);
-                setRefreshEnabled(true);
-            }
+            setRefreshEnabled(!event.running);
         }
 
 //        @Subscribe
@@ -219,6 +219,11 @@ public abstract class CursorPlurksFragment extends AbsPlurksFragment<List<Parcel
         @Subscribe
         public void notifyAccountChanged(AccountChangedEvent event) {
             reloadPlurks();
+        }
+
+        @Subscribe
+        public void notifyPlurkUserUpdated(PlurkUserUpdatedEvent event) {
+            getAdapter().notifyDataSetChanged();
         }
     }
     //endregion Message Bus

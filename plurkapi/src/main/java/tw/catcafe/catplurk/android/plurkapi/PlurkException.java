@@ -14,6 +14,7 @@ import java.util.Locale;
  */
 public class PlurkException extends Exception {
 
+    private static final long serialVersionUID = 5404760728449552495L;
     private int statusCode = -1;
     private RestHttpRequest request;
     private RestHttpResponse response;

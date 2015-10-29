@@ -28,4 +28,5 @@ public interface CatPlurkConstant extends IntentConstant, AccountConstant, Datab
     String QUERY_PARAM_NOTIFY = "notify";
 
     String TASK_TAG_GET_TIMELINE = "get_timeline";
+    String TASK_TAG_GET_RESPONSE = "get_response";
 }

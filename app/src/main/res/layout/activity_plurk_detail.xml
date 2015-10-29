@@ -12,34 +12,18 @@
         android:layout_height="@dimen/flexible_space_height"
         android:layout_marginTop="?attr/actionBarSize"
         android:background="?attr/colorPrimary"/>
-    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
-        android:id="@+id/scroll"
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize">
+        <include layout="@layout/common_response_plurk_card" />
+    </FrameLayout>
+    <fragment android:id="@+id/response_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
-        <RelativeLayout
-            android:id="@+id/body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.v7.widget.CardView android:id="@+id/cardview"
-                android:elevation="2dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/flexible_card_top_margin"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                card_view:cardCornerRadius="2dp">
-                <TextView android:id="@+id/plurk_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"/>
-            </android.support.v7.widget.CardView>
-            <FrameLayout android:id="@+id/plurk_detail_container"
-                android:layout_below="@+id/cardview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+        android:layout_marginTop="?attr/actionBarSize"
+        android:name="tw.catcafe.catplurk.android.fragment.PlurkResponseFragment"
+        tools:layout="@layout/fragment_plurk_list" />
     <android.support.v7.widget.Toolbar android:id="@+id/actionbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -71,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:src="@drawable/dummy_image"
+                    android:src="@drawable/dummy_profile_image"
                     app:border_width="2dp"
                     app:border_color="#FFFFFF"/>
             </FrameLayout>

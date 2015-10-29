@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import tw.catcafe.catplurk.android.R;
@@ -25,14 +27,14 @@ import tw.catcafe.catplurk.android.util.ContentListScrollListener;
 /**
  * @author Davy
  */
-public abstract class ContentRecyclerViewFragment<Adapter extends LoadMoreSupportAdapter> extends BaseSupportFragment
+public abstract class ContentObservableRecyclerViewFragment<Adapter extends LoadMoreSupportAdapter> extends BaseSupportFragment
         implements RefreshScrollTop, SwipeRefreshLayout.OnRefreshListener, ContentListScrollListener.ContentListSupport {
     @Bind(R.id.progress_container)
     View mProgressContainer;
     @Bind(R.id.swipe_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    ObservableRecyclerView mRecyclerView;
     @Bind(R.id.error_container)
     View mErrorContainer;
     @Bind(R.id.error_icon)
@@ -84,7 +86,7 @@ public abstract class ContentRecyclerViewFragment<Adapter extends LoadMoreSuppor
         setRefreshEnabled(false);
     }
 
-    public final RecyclerView getRecyclerView() {
+    public final ObservableRecyclerView getRecyclerView() {
         return mRecyclerView;
     }
 

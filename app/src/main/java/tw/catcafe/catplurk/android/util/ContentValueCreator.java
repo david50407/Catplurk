@@ -4,6 +4,7 @@ import android.content.ContentValues;
 
 import tw.catcafe.catplurk.android.Constants;
 import tw.catcafe.catplurk.android.plurkapi.model.Plurk;
+import tw.catcafe.catplurk.android.plurkapi.model.Response;
 import tw.catcafe.catplurk.android.plurkapi.model.User;
 import tw.catcafe.catplurk.android.provider.CatPlurkDataStore.*;
 
@@ -38,7 +39,6 @@ public class ContentValueCreator implements Constants {
         return values;
     }
 
-
     public static ContentValues createUser(User user, final long accountId) {
         final ContentValues values = new ContentValues();
         values.put(Users.ACCOUNT_ID, accountId);
@@ -57,6 +57,23 @@ public class ContentValueCreator implements Constants {
         values.put(Users.RECRUITED, user.getRecruited());
         values.put(Users.RELATIONSHIP, user.getRelationship().ordinal());
         values.put(Users.NAME_COLOR, user.getNameColor());
+        return values;
+    }
+
+    public static ContentValues createResponse(Response response, final long accountId) {
+        final ContentValues values = new ContentValues();
+        values.put(Responses.ACCOUNT_ID, accountId);
+        values.put(Responses.PLURK_ID, response.getPlurkId());
+        values.put(Responses.USER_ID, response.getUserId());
+        values.put(Responses.RESPONSE_ID, response.getResponseId());
+        values.put(Responses.LANG, response.getLang());
+        values.put(Responses.QUALIFIER, response.getQualifier());
+        values.put(Responses.QUALIFIER_TRANSLATED, response.getQualifierTranslated());
+        values.put(Responses.POSTED, response.getPosted().getTime());
+        values.put(Responses.CONTENT, response.getContent());
+        values.put(Responses.CONTENT_RAW, response.getContentRaw());
+        values.put(Responses.HANDLE, response.getHandle());
+        values.put(Responses.MY_ANONYMOUS, response.getMyAnonymous());
         return values;
     }
 }

@@ -1,9 +1,13 @@
 package tw.catcafe.catplurk.android;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,20 +15,28 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
+import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
+
+import org.mariotaku.sqliteqb.library.Columns;
+import org.mariotaku.sqliteqb.library.Expression;
 
 import butterknife.Bind;
 import butterknife.BindDimen;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import tw.catcafe.catplurk.android.activity.AccountIdentifiable;
+import tw.catcafe.catplurk.android.activity.PlurkIdentifiable;
 import tw.catcafe.catplurk.android.constant.IntentConstant;
-import tw.catcafe.catplurk.android.model.ParcelablePlurk;
+import tw.catcafe.catplurk.android.fragment.PlurkResponseFragment;
+import tw.catcafe.catplurk.android.plurkapi.model.Plurk;
 import tw.catcafe.catplurk.android.plurkapi.model.User;
+import tw.catcafe.catplurk.android.provider.CatPlurkDataStore;
 import tw.catcafe.catplurk.android.util.QualifierUtil;
 import tw.catcafe.catplurk.android.util.imageloader.UserProfileImageHelper;
+import tw.catcafe.catplurk.android.view.holder.ResponsePlurkViewHolder;
 
 import static tw.catcafe.catplurk.android.util.DatabaseUtils.findUserInDatabase;
 
@@ -38,7 +50,8 @@ import static tw.catcafe.catplurk.android.util.DatabaseUtils.findUserInDatabase;
  * more than a {@link PlurkDetailFragment}.
  */
 public class PlurkDetailActivity extends AppCompatActivity
-        implements IntentConstant, ObservableScrollViewCallbacks {
+        implements IntentConstant, AccountIdentifiable, PlurkIdentifiable,
+        ObservableScrollViewCallbacks {
 
     @Bind(R.id.actionbar)
     Toolbar actionbar;
@@ -54,11 +67,9 @@ public class PlurkDetailActivity extends AppCompatActivity
     TextView mTitleView;
     @Bind(R.id.qualifier)
     TextView mQualifierView;
-    @Bind(R.id.scroll)
-    ObservableScrollView scrollView;
 
-    @Bind(R.id.plurk_content)
-    TextView mPlurkContent;
+    @Bind(R.id.cardview)
+    CardView mCardview;
 
     @BindDimen(R.dimen.basic_margin_start)
     float mBasicMarginStart;
@@ -78,7 +89,7 @@ public class PlurkDetailActivity extends AppCompatActivity
     float mUserSizeAb;
 
     PlurkDetailFragment plurkDetailFragment;
-    ParcelablePlurk currentPlurk = null;
+    Plurk currentPlurk = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +97,7 @@ public class PlurkDetailActivity extends AppCompatActivity
             currentPlurk = getIntent().getExtras().getParcelable(EXTRA_PLURK);
         }
         if (currentPlurk != null) {
-            final int qualifierTheme = QualifierUtil.getQualifierThemeResource(currentPlurk.qualifier);
+            final int qualifierTheme = QualifierUtil.getQualifierThemeResource(currentPlurk.getQualifier());
             setTheme(qualifierTheme);
         }
 
@@ -98,27 +109,8 @@ public class PlurkDetailActivity extends AppCompatActivity
         // Show the Up button in the action bar.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putLong(PlurkDetailFragment.ARG_ITEM_ID,
-                    getIntent().getLongExtra(PlurkDetailFragment.ARG_ITEM_ID, -1));
-            plurkDetailFragment = new PlurkDetailFragment();
-            plurkDetailFragment.setArguments(arguments);
-            getFragmentManager().beginTransaction()
-                    .add(R.id.plurk_detail_container, plurkDetailFragment)
-                    .commit();
-        }
+        final ResponsePlurkViewHolder plurkHolder = new ResponsePlurkViewHolder(mCardview);
+        mCardview.setTag(plurkHolder);
 
         if (currentPlurk != null) {
             final User owner = findUserInDatabase(this,
@@ -128,31 +120,34 @@ public class PlurkDetailActivity extends AppCompatActivity
                 Application.getInstance(this).getImageLoaderWrapper().displayImage(mProfileImage,
                         UserProfileImageHelper.getUrl(owner));
             }
-            mQualifierView.setText(currentPlurk.qualifierTranslated);
-            mPlurkContent.setText(currentPlurk.contentRaw);
+            mQualifierView.setText(currentPlurk.getQualifierTranslated());
+            plurkHolder.displayPlurk(this, currentPlurk);
         }
 
-        scrollView.setScrollViewCallbacks(this);
-
-        ScrollUtils.addOnGlobalLayoutListener(scrollView, new Runnable() {
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final PlurkResponseFragment responseFragment = (PlurkResponseFragment)fragmentManager.findFragmentById(R.id.response_list);
+        final ObservableRecyclerView recyclerView = responseFragment.getRecyclerView();
+        recyclerView.setScrollViewCallbacks(this);
+        mCardview.addOnLayoutChangeListener((view, left, top, right, bottom,
+                                             oldLeft, oldTop, oldRight, oldBottom) ->
+                recyclerView.invalidateItemDecorations());
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
-            public void run() {
-                updateFlexibleSpace(scrollView.getCurrentScrollY());
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                if (parent.getChildAdapterPosition(view) == 0)
+                    outRect.top = (int)getListPaddingTop();
             }
         });
+
+        ScrollUtils.addOnGlobalLayoutListener(recyclerView, () ->
+                updateFlexibleSpace(recyclerView.getCurrentScrollY()));
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-//            navigateUpTo(new Intent(this, PlurkListActivity.class));
             finish();
             return true;
         }
@@ -161,7 +156,9 @@ public class PlurkDetailActivity extends AppCompatActivity
 
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+        scrollY += getListPaddingTop();
         updateFlexibleSpace(scrollY);
+        updateCardPosition(scrollY);
     }
 
     @Override
@@ -170,6 +167,10 @@ public class PlurkDetailActivity extends AppCompatActivity
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+    }
+
+    private float getListPaddingTop() {
+        return mCardview.getMeasuredHeight() + mFlexibleSpaceTouchCardHeight + mBasicMarginStart;
     }
 
     private void updateFlexibleSpace(final int scrollY) {
@@ -211,5 +212,22 @@ public class PlurkDetailActivity extends AppCompatActivity
                 * ((float) visiableFlexibleSpaceHeight - adjustedScrollY)
                 / (mFlexibleSpaceHeight + actionbar.getHeight()));
         mFlexibleSpaceLayout.setTranslationX(maxTranslationX - translationX);
+    }
+
+    private void updateCardPosition(final int scrollY) {
+        mCardview.setTranslationY(ScrollUtils.getFloat(
+                -scrollY, -mCardview.getMeasuredHeight() - mFlexibleSpaceHeight, 0));
+    }
+
+    @Override
+    public long getActivatedAccountId() {
+        if (currentPlurk == null) return -1;
+        return currentPlurk.getAccountId();
+    }
+
+    @Override
+    public long getCurrentPlurkId() {
+        if (currentPlurk == null) return -1;
+        return currentPlurk.getPlurkId();
     }
 }

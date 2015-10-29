@@ -82,7 +82,7 @@ public class ParcelableUser implements Parcelable, tw.catcafe.catplurk.android.p
     public Date dateOfBirth;
     @JsonField
     @ParcelableThisPlease
-    public BirthdayPrivacy bdayPrivacy;
+    public BirthdayPrivacy bdayPrivacy = BirthdayPrivacy.NULL;
 
     @JsonField
     @ParcelableThisPlease

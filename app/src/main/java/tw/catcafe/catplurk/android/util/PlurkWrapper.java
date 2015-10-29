@@ -5,12 +5,27 @@ import java.util.List;
 import tw.catcafe.catplurk.android.Constants;
 import tw.catcafe.catplurk.android.api.ListResponse;
 import tw.catcafe.catplurk.android.plurkapi.model.Plurk;
+import tw.catcafe.catplurk.android.plurkapi.model.Response;
 
 /**
  * @author Davy
  */
 public class PlurkWrapper implements Constants {
     //region ListResponse
+    public static final class ResponseListResponse extends PlurkApiListResponse<Response> {
+        public ResponseListResponse(final long accountId, final Exception exception) {
+            this(accountId, -1, -1, null, exception);
+        }
+
+        public ResponseListResponse(final long accountId, final List<Response> list) {
+            this(accountId, -1, -1, list, null);
+        }
+
+        public ResponseListResponse(final long accountId, final long maxId, final long sinceId, final List<Response> list,
+                          final Exception exception) {
+            super(accountId, maxId, sinceId, list, exception);
+        }
+    }
     public static final class PlurkListResponse extends PlurkApiListResponse<Plurk> {
         public final boolean truncated;
 

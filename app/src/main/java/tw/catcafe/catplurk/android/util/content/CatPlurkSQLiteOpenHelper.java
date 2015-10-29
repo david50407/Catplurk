@@ -20,9 +20,11 @@ import org.mariotaku.sqliteqb.library.query.SQLDeleteQuery;
 import org.mariotaku.sqliteqb.library.query.SQLCreateTriggerQuery.*;
 
 import tw.catcafe.catplurk.android.constant.DatabaseConstant;
+import tw.catcafe.catplurk.android.provider.CatPlurkDataStore;
 import tw.catcafe.catplurk.android.provider.CatPlurkDataStore.Accounts;
 import tw.catcafe.catplurk.android.provider.CatPlurkDataStore.Plurks;
 import tw.catcafe.catplurk.android.provider.CatPlurkDataStore.Users;
+import tw.catcafe.catplurk.android.provider.CatPlurkDataStore.Responses;
 
 import static tw.catcafe.catplurk.android.util.content.DatabaseUpgradeHelper.safeUpgrade;
 
@@ -45,6 +47,7 @@ public final class CatPlurkSQLiteOpenHelper extends SQLiteOpenHelper implements 
         db.execSQL(createTable(Accounts.TABLE_NAME, Accounts.COLUMNS, Accounts.TYPES, true));
         db.execSQL(createTable(Plurks.TABLE_NAME, Plurks.COLUMNS, Plurks.TYPES, true));
         db.execSQL(createTable(Users.TABLE_NAME, Users.COLUMNS, Users.TYPES, true));
+        db.execSQL(createTable(Responses.TABLE_NAME, Responses.COLUMNS, Responses.TYPES, true));
 
         createViews(db);
         createTriggers(db);
@@ -75,6 +78,8 @@ public final class CatPlurkSQLiteOpenHelper extends SQLiteOpenHelper implements 
         db.execSQL(createIndex("plurks_id_index", Plurks.TABLE_NAME, new String[]{Plurks.ACCOUNT_ID, Plurks.PLURK_ID}, true));
         db.execSQL(createIndex("users_index", Users.TABLE_NAME, new String[]{Users.ACCOUNT_ID}, true));
         db.execSQL(createIndex("users_id_index", Users.TABLE_NAME, new String[]{Users.ACCOUNT_ID, Users.ID}, true));
+        db.execSQL(createIndex("responses_index", Responses.TABLE_NAME, new String[]{Responses.ACCOUNT_ID, Responses.PLURK_ID}, true));
+        db.execSQL(createIndex("responses_id_index", Responses.TABLE_NAME, new String[]{Responses.ACCOUNT_ID, Responses.PLURK_ID, Responses.RESPONSE_ID}, true));
     }
 
     private void createViews(SQLiteDatabase db) {
@@ -84,8 +89,10 @@ public final class CatPlurkSQLiteOpenHelper extends SQLiteOpenHelper implements 
     private void createTriggers(SQLiteDatabase db) {
         db.execSQL(SQLQueryBuilder.dropTrigger(true, "delete_outdated_plurks").getSQL());
         db.execSQL(SQLQueryBuilder.dropTrigger(true, "delete_outdated_users").getSQL());
+        db.execSQL(SQLQueryBuilder.dropTrigger(true, "delete_outdated_responses").getSQL());
         db.execSQL(createDeleteDuplicatePlurkTrigger("delete_outdated_plurks", Plurks.TABLE_NAME).getSQL());
         db.execSQL(createDeleteDuplicateUserTrigger("delete_outdated_users", Users.TABLE_NAME).getSQL());
+        db.execSQL(createDeleteDuplicateResponseTrigger("delete_outdated_responses", Responses.TABLE_NAME).getSQL());
     }
 
     //region SQL Triggers Builder
@@ -110,13 +117,26 @@ public final class CatPlurkSQLiteOpenHelper extends SQLiteOpenHelper implements 
                 .type(Type.BEFORE).event(Event.INSERT).on(table).forEachRow(true)
                 .actions(deleteOld).build();
     }
-    //endregion SQL Triggers Builder
 
+    private SQLQuery createDeleteDuplicateResponseTrigger(String triggerName, String tableName) {
+        final Table table = new Table(tableName);
+        final SQLDeleteQuery deleteOld = SQLQueryBuilder.deleteFrom(table).where(Expression.and(
+                Expression.equals(new Column(Responses.ACCOUNT_ID), new Column(Table.NEW, Responses.ACCOUNT_ID)),
+                Expression.and(
+                        Expression.equals(new Column(Responses.PLURK_ID), new Column(Table.NEW, Responses.PLURK_ID)),
+                        Expression.equals(new Column(Responses.RESPONSE_ID), new Column(Table.NEW, Responses.RESPONSE_ID))
+                ))).build();
+        return SQLQueryBuilder.createTrigger(false, true, triggerName)
+                .type(Type.BEFORE).event(Event.INSERT).on(table).forEachRow(true)
+                .actions(deleteOld).build();
+    }
+    //endregion SQL Triggers Builder
 
     private void handleVersionChange(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         safeUpgrade(db, Accounts.TABLE_NAME, Accounts.COLUMNS, Accounts.TYPES, false, null);
         safeUpgrade(db, Plurks.TABLE_NAME, Plurks.COLUMNS, Plurks.TYPES, true, null);
         safeUpgrade(db, Users.TABLE_NAME, Users.COLUMNS, Users.TYPES, true, null);
+        safeUpgrade(db, Responses.TABLE_NAME, Responses.COLUMNS, Responses.TYPES, true, null);
         db.beginTransaction();
         createViews(db);
         createTriggers(db);

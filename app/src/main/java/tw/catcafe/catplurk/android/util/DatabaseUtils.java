@@ -18,6 +18,7 @@ import tw.catcafe.catplurk.android.provider.CatPlurkDataStore.*;
  * @author Davy
  */
 public class DatabaseUtils implements Constants {
+    //region Plurks
     public static int getPlurkCountInDatabase(final Context context, final Uri uri, final long accountId) {
         if (context == null) return -1;
         final ContentResolver resolver = context.getContentResolver();
@@ -33,27 +34,6 @@ public class DatabaseUtils implements Constants {
         } finally {
             cur.close();
         }
-    }
-
-    @Nullable
-    public static User findUserInDatabase(final Context context, final long accountId,
-                                          final long userId) {
-        if (context == null) return null;
-        final ContentResolver contentResolver = context.getContentResolver();
-        User user = null;
-        final String where = Expression.and(
-                Expression.equals(Users.ACCOUNT_ID, accountId),
-                Expression.equals(Users.ID, userId)
-        ).getSQL();
-        final Cursor cursor = ContentResolverUtils.query(contentResolver, Users.CONETNT_URI,
-                Users.COLUMNS, where, null, null);
-        if (cursor == null) return null;
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            user = new ParcelableUser.CursorIndices(cursor).newObject(cursor);
-        }
-        cursor.close();
-        return user;
     }
 
     public static long[] getNewestPlurkPostIdAndTimeFromDatabase(final Context context, final Uri uri, final long accountId) {
@@ -95,4 +75,51 @@ public class DatabaseUtils implements Constants {
             return result;
         }
     }
+    //endregion Plurks
+
+    //region Users
+    @Nullable
+    public static User findUserInDatabase(final Context context, final long accountId,
+                                          final long userId) {
+        if (context == null) return null;
+        final ContentResolver contentResolver = context.getContentResolver();
+        User user = null;
+        final String where = Expression.and(
+                Expression.equals(Users.ACCOUNT_ID, accountId),
+                Expression.equals(Users.ID, userId)
+        ).getSQL();
+        final Cursor cursor = ContentResolverUtils.query(contentResolver, Users.CONETNT_URI,
+                Users.COLUMNS, where, null, null);
+        if (cursor == null) return null;
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            user = new ParcelableUser.CursorIndices(cursor).newObject(cursor);
+        }
+        cursor.close();
+        return user;
+    }
+    //endregion Users
+
+    //region Responses
+    public static int getResponseCountInDatabase(final Context context, final Uri uri,
+                                                 final long accountId, final long plurkId) {
+        if (context == null || uri == null || accountId == -1 || plurkId == -1)
+            return -1;
+        final ContentResolver resolver = context.getContentResolver();
+        final String where = Expression.and(
+                Expression.equals(Responses.ACCOUNT_ID, accountId),
+                Expression.equals(Responses.PLURK_ID, plurkId)).getSQL();
+        final String[] projection = new String[]{SQLFunctions.COUNT()};
+        final Cursor cur = ContentResolverUtils.query(resolver, uri, projection, where, null, null);
+        if (cur == null) return -1;
+        try {
+            if (cur.moveToFirst()) {
+                return cur.getInt(0);
+            }
+            return -1;
+        } finally {
+            cur.close();
+        }
+    }
+    //endregion Responses
 }

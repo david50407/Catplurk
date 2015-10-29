@@ -26,11 +26,14 @@ import tw.catcafe.catplurk.android.plurkapi.PlurkApi;
 import tw.catcafe.catplurk.android.plurkapi.PlurkException;
 import tw.catcafe.catplurk.android.plurkapi.model.Paging;
 import tw.catcafe.catplurk.android.plurkapi.model.Plurk;
+import tw.catcafe.catplurk.android.plurkapi.model.Response;
+import tw.catcafe.catplurk.android.plurkapi.model.ResponsesResponse;
 import tw.catcafe.catplurk.android.plurkapi.model.TimelinePlurksResponse;
 import tw.catcafe.catplurk.android.plurkapi.model.User;
 import tw.catcafe.catplurk.android.provider.CatPlurkDataStore.*;
 import tw.catcafe.catplurk.android.task.ManagedAsyncTask;
 import tw.catcafe.catplurk.android.util.message.GetPlurksTaskEvent;
+import tw.catcafe.catplurk.android.util.message.GetResponsesTaskEvent;
 import tw.catcafe.catplurk.android.util.message.PlurkUserUpdatedEvent;
 
 /**
@@ -42,6 +45,7 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
     private final ContentResolver mResolver;
 
     private int mGetTimelineTaskId;
+    private int mGetResponseTaskId;
 
     public AsyncPlurkWrapper(final Context context) {
         mContext = context;
@@ -59,6 +63,14 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
         mGetTimelineTaskId = mAsyncTaskManager.add(task, true);
         return true;
     }
+
+    public boolean getResponseAsync(final long accountId, final long plurkId, final long offset,
+                                    final long limit) {
+        mAsyncTaskManager.cancel(mGetResponseTaskId);
+        final GetResponseTask task = new GetResponseTask(accountId, plurkId, offset, limit);
+        mGetResponseTaskId = mAsyncTaskManager.add(task, true);
+        return true;
+    }
     //endregion APIs
 
     private static <T extends SingleResponse<?>> Exception getException(List<T> responses) {
@@ -71,6 +83,10 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
     //region Tasks
     public boolean isTimelineRefreshing() {
         return mAsyncTaskManager.hasRunningTasksForTag(TASK_TAG_GET_TIMELINE);
+    }
+
+    public boolean isResponseRefreshing() {
+        return mAsyncTaskManager.hasRunningTasksForTag(TASK_TAG_GET_RESPONSE);
     }
 
     class GetHomeTimelineTask extends GetPlurksTask {
@@ -326,6 +342,150 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
                     }
                 }
                 storeUser(mAccountId, result, true);
+            }
+            return result;
+        }
+    }
+
+    class GetResponseTask extends ManagedAsyncTask<Object, PlurkApiListResponse<Response>, List<ResponseListResponse>> {
+        private final long mAccountId, mPlurkId, mOffset, mLimit;
+
+        public GetResponseTask(final long account_id, final long plurkId, final long offset,
+                               final long limit) {
+            super(mContext, mAsyncTaskManager, TASK_TAG_GET_RESPONSE);
+            mAccountId = account_id;
+            mPlurkId = plurkId;
+            mOffset = offset;
+            mLimit = limit;
+        }
+
+        @NonNull
+        protected Uri getDatabaseUri() {
+            return Responses.CONTENT_URI;
+        }
+
+        private void storeResponse(final long accountId, final long plurkId,
+                                   final List<Response> responses, final boolean notify) {
+            if (responses == null || responses.isEmpty() || plurkId <= 0 || accountId <= 0)
+                return;
+            final Uri uri = getDatabaseUri();
+//            final boolean noItemsBefore =
+//                    DatabaseUtils.getResponseCountInDatabase(mContext, uri, accountId, plurkId) <= 0;
+            // turn responses into ContentValue
+            ContentValues[] values = new ContentValues[responses.size()];
+            values = Observable.from(responses)
+                    .map(response -> ContentValueCreator.createResponse(response, accountId))
+                    .toList()
+                    .toBlocking()
+                    .single()
+                    .toArray(values);
+//            final long[] responseIds = new long[responses.size()];
+//            final ContentValues[] values = new ContentValues[responses.size()];
+//            long minId = -1;
+//            int minIdx = -1;
+//            {
+//                int i = 0;
+//                for (final Response response : responses) {
+//                    values[i] = ContentValueCreator.createResponse(response, accountId);
+//                    final long id = response.getPlurkId();
+//                    if (minId == -1 || id < minId) {
+//                        minId = id;
+//                        minIdx = i;
+//                    }
+//                    responseIds[i] = id;
+//                    ++i;
+//                }
+//            }
+            // Delete all rows conflicting before new data inserted.
+            // But this will be done by notify receiver in SQLite.
+//            final Expression accountWhere = Expression.equals(Plurks.ACCOUNT_ID, accountId);
+//            final Expression statusWhere = Expression.in(new Columns.Column(Plurks.PLURK_ID), new RawItemArray(responseIds));
+//            final String countWhere = Expression.and(accountWhere, statusWhere).getSQL();
+//            final String[] projection = {SQLFunctions.COUNT()};
+//            final Cursor countCur = mResolver.query(uri, projection, countWhere, null, null);
+//            final int rowsDeleted = countCur.moveToFirst() ? countCur.getInt(0) : 0;
+//            countCur.close();
+
+            // Find minId in Database to check if gap is needed.
+//            boolean needGap = true;
+//            if (minId > 0) {
+//                final Cursor minCur = mResolver.query(uri, projection,
+//                        Expression.and(accountWhere, Expression.and(
+//                                Expression.equals(Plurks.PLURK_ID, minId),
+//                                Expression.equals(Plurks.IS_GAP, 0))).getSQL(),
+//                        null, null);
+//                needGap = !minCur.moveToFirst() || minCur.getInt(0) > 0;
+//                minCur.close();
+//            }
+
+            // Insert a gap.
+//            final boolean noRowsDeleted = rowsDeleted == 0;
+//            final boolean insertGap = minId > 0 && noRowsDeleted && !noItemsBefore &&
+//                    responses.size() > 1 && needGap;
+//            if (insertGap && minIdx != -1) {
+//                values[minIdx].put(Plurks.IS_GAP, true);
+//            }
+            // Insert previously fetched items.
+            final Uri insertUri = UriUtils.appendQueryParameters(uri, QUERY_PARAM_NOTIFY, notify);
+            ContentResolverUtils.bulkInsert(mResolver, insertUri, values);
+        }
+
+        private void storeUser(final long accountId, final List<User> users, final boolean notify) {
+            if (users == null || users.isEmpty() || accountId <= 0) return;
+            final Uri uri = Users.CONETNT_URI;
+            final ContentValues[] values = Observable.from(users)
+                    .map((user) -> ContentValueCreator.createUser(user, accountId))
+                    .toList()
+                    .toBlocking()
+                    .single()
+                    .toArray(new ContentValues[users.size()]);
+            final Uri insertUri = UriUtils.appendQueryParameters(uri, QUERY_PARAM_NOTIFY, notify);
+            ContentResolverUtils.bulkInsert(mResolver, insertUri, values);
+        }
+
+        @Override
+        protected void onPostExecute(List<ResponseListResponse> result) {
+            super.onPostExecute(result);
+            final Bus bus = Application.getInstance(mContext).getMessageBus();
+            assert bus != null;
+            bus.post(new GetResponsesTaskEvent(getDatabaseUri(), false, getException(result)));
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            final Bus bus = Application.getInstance(mContext).getMessageBus();
+            assert bus != null;
+            bus.post(new GetResponsesTaskEvent(getDatabaseUri(), true, null));
+        }
+
+        @Override
+        protected List<ResponseListResponse> doInBackground(final Object... params) {
+            final List<ResponseListResponse> result = new ArrayList<>();
+            if (mAccountId == -1) return result;
+            // TODO
+//            final int loadItemLimit = mPreferences.getInt(KEY_LOAD_ITEM_LIMIT, DEFAULT_LOAD_ITEM_LIMIT);
+            final int loadItemLimit = 20;
+            final PlurkApi plurkApi = PlurkAPIFactory.getPlurkApiInstance(mContext, mAccountId);
+            if (plurkApi == null) return result;
+            try {
+                final long from_response = mOffset >= 0 ? mOffset : 0;
+                final long limit = mLimit > 0 ? mLimit : 20;
+                final List<Response> responses = new ArrayList<>();
+                final List<User> friends = new ArrayList<>();
+                final ResponsesResponse apiResponse = plurkApi.getResponses(mPlurkId,
+                        from_response, limit);
+                responses.addAll(apiResponse.getResponses());
+                // Why Plurk Api response an empty array for empty friends,
+                // WTF!? Doesn't this should be a hash?
+                if (apiResponse.getFriends() != null)
+                    friends.addAll(apiResponse.getFriends().values());
+                storeResponse(mAccountId, mPlurkId, responses, true);
+                storeUser(mAccountId, friends, true);
+                publishProgress(new ResponseListResponse(mAccountId, responses));
+            } catch (final PlurkException e) {
+                Log.w(LOGTAG, e);
+                result.add(new ResponseListResponse(mAccountId, e));
             }
             return result;
         }

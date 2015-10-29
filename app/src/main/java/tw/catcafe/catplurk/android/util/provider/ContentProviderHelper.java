@@ -18,6 +18,7 @@ public class ContentProviderHelper implements DatabaseConstant {
         CONTENT_PROVIDER_URI_MATCHER.addURI(AUTHORITY, Accounts.CONTENT_PATH, TABLE_ID_ACCOUNTS);
         CONTENT_PROVIDER_URI_MATCHER.addURI(AUTHORITY, Plurks.CONTENT_PATH, TABLE_ID_PLURKS);
         CONTENT_PROVIDER_URI_MATCHER.addURI(AUTHORITY, Users.CONTENT_PATH, TABLE_ID_USERS);
+        CONTENT_PROVIDER_URI_MATCHER.addURI(AUTHORITY, Responses.CONTENT_PATH, TABLE_ID_RESPONSES);
     }
     public static int getTableId(final Uri uri) {
         if (uri == null) return -1;
@@ -32,6 +33,8 @@ public class ContentProviderHelper implements DatabaseConstant {
                 return Plurks.TABLE_NAME;
             case TABLE_ID_USERS:
                 return Users.TABLE_NAME;
+            case TABLE_ID_RESPONSES:
+                return Responses.TABLE_NAME;
             default:
                 return null;
         }

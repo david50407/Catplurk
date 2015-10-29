@@ -63,7 +63,8 @@ public interface User extends Comparable<User>, PlurkApiResponse {
     enum BirthdayPrivacy {
         HIDE,
         DATE_ONLY,
-        ALL
+        ALL,
+        NULL
     }
 
 //    enum NameColor {

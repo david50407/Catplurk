@@ -10,6 +10,7 @@ public interface IntentConstant {
     String INTENT_ACTION_ACCOUNT_LOGIN = INTENT_NAMESPACE + "ACCOUNT_LOGIN";
 
     String EXTRA_ACCOUNT_ID = "account_id";
+    String EXTRA_PLURK_ID = "plurk_id";
     String EXTRA_PLURK = "plurk";
     String EXTRA_PLURKS = "plurks";
     String EXTRA_FROM_USER = "from_user";

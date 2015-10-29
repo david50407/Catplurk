@@ -6,6 +6,7 @@ import java.util.Date;
  * @author Davy
  */
 public interface Response extends Comparable<Response>, PlurkApiResponse {
+    long getAccountId();
     long getUserId();
     long getPlurkId();
     long getResponseId();

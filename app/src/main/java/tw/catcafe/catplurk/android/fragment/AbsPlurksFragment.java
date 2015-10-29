@@ -8,7 +8,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.squareup.otto.Bus;
@@ -21,7 +20,7 @@ import tw.catcafe.catplurk.android.adapter.AbsPlurkAdapter.PlurkAdapterListener;
 import tw.catcafe.catplurk.android.constant.IntentConstant;
 import tw.catcafe.catplurk.android.loader.IExtendedLoader;
 import tw.catcafe.catplurk.android.model.ParcelablePlurk;
-import tw.catcafe.catplurk.android.support.fragment.ContentRecyclerViewFragment;
+import tw.catcafe.catplurk.android.support.fragment.ContentObservableRecyclerViewFragment;
 import tw.catcafe.catplurk.android.util.OpenIntentUtil;
 import tw.catcafe.catplurk.android.util.message.PlurkListChangedEvent;
 import tw.catcafe.catplurk.android.view.holder.GapViewHolder;
@@ -30,7 +29,7 @@ import tw.catcafe.catplurk.android.view.holder.PlurkViewHolder;
 /**
  * @author Davy
  */
-public abstract class AbsPlurksFragment<Data> extends ContentRecyclerViewFragment<AbsPlurkAdapter<Data>>
+public abstract class AbsPlurksFragment<Data> extends ContentObservableRecyclerViewFragment<AbsPlurkAdapter<Data>>
         implements IntentConstant, LoaderCallbacks<Data>, PlurkAdapterListener {
     private final Object mPlurksBusCallback;
     private PopupMenu mPopupMenu;

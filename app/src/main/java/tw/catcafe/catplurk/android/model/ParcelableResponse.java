@@ -57,6 +57,10 @@ public class ParcelableResponse implements Parcelable, tw.catcafe.catplurk.andro
     public boolean isGap;
 
     //region Getter
+    public long getAccountId() {
+        return accountId;
+    }
+
     public long getUserId() {
         return userId;
     }

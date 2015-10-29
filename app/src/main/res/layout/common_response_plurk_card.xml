@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.CardView android:id="@+id/cardview"
+        android:elevation="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/flexible_card_top_margin"
+        android:layout_marginBottom="@dimen/card_half_padding"
+        android:layout_marginStart="@dimen/card_padding"
+        android:layout_marginEnd="@dimen/card_time_padding"
+        app:cardCornerRadius="2dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/card_padding"
+            android:paddingBottom="@dimen/card_padding"
+            android:orientation="vertical">
+            <LinearLayout android:id="@+id/replurk_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/spacing_small"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="@dimen/card_plurk_replurk_icon_size"
+                    android:layout_height="@dimen/card_plurk_replurk_icon_size"
+                    android:layout_marginStart="35dp"
+                    android:tint="?android:textColorTertiary"
+                    android:tintMode="src_atop"
+                    android:src="@drawable/icon_replurk" />
+                <TextView android:id="@+id/replurker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_mlarge"
+                    android:textSize="@dimen/text_secondary_size"
+                    android:text="@string/plurk_loading_replurker" />
+            </LinearLayout>
+            <TextView android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/basic_margin_start"
+                android:layout_marginEnd="@dimen/basic_margin_end"
+                android:paddingBottom="@dimen/card_area_padding"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="@dimen/text_secondary_size"
+                android:text="分風西好下化前命市：多跑和愛的時一畫學事想：合雜如素制邊策共成時：言費了東子樓叫時魚生人灣部司感中制天。目縣不星以牛家日們！衣的家風、是學出媽自那爸那種支，通醫因子女公的形過課國比天一上報？\n集隨其一性性們和會名是大表期轉可得長、為後供寫個其這民……情心氣等。" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/card_actions_area_padding"
+                android:layout_marginStart="@dimen/basic_margin_start"
+                android:layout_marginEnd="@dimen/basic_margin_end"
+                android:layout_marginBottom="0dp"
+                android:gravity="center_vertical|start">
+                <tw.catcafe.catplurk.android.view.IconTextView
+                    android:id="@+id/action_favorite"
+                    android:layout_width="wrap_content"
+                    app:itvIconicsIcon="faw-heart"
+                    style="@style/AppTheme.IconView"
+                    android:text="3" />
+                <tw.catcafe.catplurk.android.view.IconTextView
+                    android:id="@+id/action_replurk"
+                    android:layout_toEndOf="@+id/action_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="@dimen/icon_text_padding"
+                    android:drawableStart="@drawable/icon_replurk"
+                    style="@style/AppTheme.IconView"
+                    android:text="30" />
+                <tw.catcafe.catplurk.android.view.IconButton
+                    android:id="@+id/action_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:color="?android:textColorTertiary"
+                    android:src="@drawable/icon_action_menu"
+                    style="@style/AppTheme.IconView" />
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</merge>

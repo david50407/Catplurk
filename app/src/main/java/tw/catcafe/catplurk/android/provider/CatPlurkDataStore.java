@@ -392,7 +392,6 @@ public interface CatPlurkDataStore {
                 TYPE_TEXT, TYPE_INT, TYPE_DOUBLE_NOT_NULL, TYPE_INT , TYPE_INT    , TYPE_TEXT };
     }
 
-
     interface Responses extends BaseColumns {
         String TABLE_NAME = "responses";
         String CONTENT_PATH = TABLE_NAME;
@@ -479,12 +478,12 @@ public interface CatPlurkDataStore {
         String IS_GAP = "is_gap";
         //endregion Column name
 
-        String[] COLUMNS = {_ID             , ACCOUNT_ID, PLURK_ID, LANG     , QUALIFIER         ,
-                QUALIFIER_TRANSLATED, POSTED  , CONTENT            , CONTENT_RAW      , HANDLE   ,
-                MY_ANONYMOUS, IS_GAP      };
+        String[] COLUMNS = {_ID             , ACCOUNT_ID, PLURK_ID, USER_ID , RESPONSE_ID, LANG     ,
+                QUALIFIER         , QUALIFIER_TRANSLATED, POSTED  , CONTENT            ,
+                CONTENT_RAW       , HANDLE   , MY_ANONYMOUS, IS_GAP      };
 
-        String[] TYPES   = {TYPE_PRIMARY_KEY, TYPE_INT  , TYPE_INT, TYPE_TEXT, TYPE_TEXT_NOT_NULL,
-                TYPE_TEXT           , TYPE_INT, TYPE_TEXT_NOT_NULL, TYPE_TEXT_NOT_NULL, TYPE_TEXT,
-                TYPE_TEXT   , TYPE_BOOLEAN};
+        String[] TYPES   = {TYPE_PRIMARY_KEY, TYPE_INT  , TYPE_INT, TYPE_INT, TYPE_INT   , TYPE_TEXT,
+                TYPE_TEXT_NOT_NULL, TYPE_TEXT           , TYPE_INT, TYPE_TEXT_NOT_NULL,
+                TYPE_TEXT_NOT_NULL, TYPE_TEXT, TYPE_TEXT   , TYPE_BOOLEAN};
     }
 }

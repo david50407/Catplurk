@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="plurk_loading">載入中…</string>
+    <string name="plurk_loading_replurker">正在載入轉噗者資訊…</string>
     <string name="plurk_has_been_replurked">%s 轉噗了</string>
 
 </resources>

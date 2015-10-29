@@ -180,4 +180,12 @@ public abstract class ContentObservableRecyclerViewFragment<Adapter extends Load
         mErrorIconView.setImageResource(icon);
         mErrorTextView.setText(text);
     }
+
+    public final View getErrorContainer() {
+        return mErrorContainer;
+    }
+
+    public final View getProgressContainer() {
+        return mProgressContainer;
+    }
 }

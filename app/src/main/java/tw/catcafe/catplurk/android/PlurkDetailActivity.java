@@ -129,8 +129,11 @@ public class PlurkDetailActivity extends AppCompatActivity
         final ObservableRecyclerView recyclerView = responseFragment.getRecyclerView();
         recyclerView.setScrollViewCallbacks(this);
         mCardview.addOnLayoutChangeListener((view, left, top, right, bottom,
-                                             oldLeft, oldTop, oldRight, oldBottom) ->
-                recyclerView.invalidateItemDecorations());
+                                             oldLeft, oldTop, oldRight, oldBottom) -> {
+            recyclerView.invalidateItemDecorations();
+            responseFragment.getErrorContainer().setPaddingRelative(0, (int) getListPaddingTop(), 0, 0);
+            responseFragment.getProgressContainer().setPaddingRelative(0, (int)getListPaddingTop(), 0, 0);
+        });
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {

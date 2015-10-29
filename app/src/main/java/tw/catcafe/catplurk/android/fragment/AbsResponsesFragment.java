@@ -110,6 +110,8 @@ public abstract class AbsResponsesFragment<Data> extends ContentObservableRecycl
         final AbsResponseAdapter<Data> adapter = getAdapter();
         adapter.setData(data);
         setRefreshEnabled(true);
+        if (!(loader instanceof IExtendedLoader) || ((IExtendedLoader) loader).isFromUser())
+            adapter.setLoadMoreSupported(hasMoreData(data));
         if (loader instanceof IExtendedLoader)
             ((IExtendedLoader) loader).setFromUser(false);
         onLoadingFinished();

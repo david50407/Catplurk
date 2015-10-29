@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_small"
             android:orientation="horizontal">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
@@ -53,5 +53,10 @@
             android:layout_marginStart="60dp"
             android:layout_marginEnd="@dimen/spacing_normal"
             android:text="分風西好下化前命市：多跑和愛的時一畫學事想：合雜如素制邊策共成時：言費了東子樓叫時魚生人灣部司感中制天。目縣不星以牛家日們！衣的家風、是學出媽自那爸那種支，通醫因子女公的形過課國比天一上報？\n集隨其一性性們和會名是大表期轉可得長、為後供寫個其這民……情心氣等。" />
+
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/md_grey_300" />
 </LinearLayout>

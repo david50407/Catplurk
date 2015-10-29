@@ -65,11 +65,12 @@ public class ResponseViewHolder extends RecyclerView.ViewHolder {
         final User user = findUserInDatabase(context, response.getAccountId(), response.getUserId());
         final int qualifierColorResource = QualifierUtil.getQualifierColorResource(response.getQualifier());
         final int qualifierColor = context.getResources().getColor(qualifierColorResource);
-        bindProfile(user, application, qualifierColorResource);
+        bindProfile(response, user, application, qualifierColorResource);
         bindPlurk(response, qualifierColor);
     }
 
-    protected void bindProfile(final User user, final Application application, final int qualifierColorResource) {
+    protected void bindProfile(final Response response, final User user,
+                               final Application application, final int qualifierColorResource) {
         profileImage.setBorderColorResource(qualifierColorResource);
         if (user != null) {
             application.getImageLoaderWrapper().displayImage(profileImage,
@@ -77,8 +78,14 @@ public class ResponseViewHolder extends RecyclerView.ViewHolder {
                     new DisplayImageOptions.Builder()
                             .showImageOnLoading(R.drawable.dummy_profile_image)
                             .build());
-            profileName.setText(user.getDisplayName());
-            profileName.setTextColor(Color.parseColor(user.getNameColor() == null ? "#000000" : ("#" + user.getNameColor())));
+            if (response.getHandle() != null && !response.getHandle().isEmpty()) {
+                profileName.setText(response.getHandle());
+                // TODO: write into color resources
+                profileName.setTextColor(Color.parseColor(response.getMyAnonymous() ? "#0A9C17" : "#AE00B0"));
+            } else {
+                profileName.setText(user.getDisplayName());
+                profileName.setTextColor(Color.parseColor(user.getNameColor() == null ? "#000000" : ("#" + user.getNameColor())));
+            }
         }
     }
 

@@ -364,6 +364,27 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
             return Responses.CONTENT_URI;
         }
 
+        private void updatePlurkResponseCount(final long accountId, final long plurkId,
+                                              final long count) {
+            final ContentValues updateValue = new ContentValues();
+            updateValue.put(Plurks.RESPONSE_COUNT, count);
+            mResolver.update(Plurks.CONTENT_URI, updateValue,
+                    Expression.and(Expression.equals(Plurks.ACCOUNT_ID, accountId),
+                            Expression.equals(Plurks.PLURK_ID, plurkId)
+                    ).getSQL(), null);
+        }
+
+        private void updatePlurkResponseSeen(final long accountId, final long plurkId,
+                                              final long seen) {
+            final ContentValues updateValue = new ContentValues();
+            updateValue.put(Plurks.RESPONSES_SEEN, seen);
+            updateValue.put(Plurks.IS_UNREAD, Plurk.ReadState.READ.ordinal());
+            mResolver.update(Plurks.CONTENT_URI, updateValue,
+                    Expression.and(Expression.equals(Plurks.ACCOUNT_ID, accountId),
+                            Expression.equals(Plurks.PLURK_ID, plurkId)
+                    ).getSQL(), null);
+        }
+
         private void storeResponse(final long accountId, final long plurkId,
                                    final List<Response> responses, final boolean notify) {
             if (responses == null || responses.isEmpty() || plurkId <= 0 || accountId <= 0)
@@ -480,6 +501,8 @@ public class AsyncPlurkWrapper extends PlurkWrapper {
                 // WTF!? Doesn't this should be a hash?
                 if (apiResponse.getFriends() != null)
                     friends.addAll(apiResponse.getFriends().values());
+                updatePlurkResponseCount(mAccountId, mPlurkId, apiResponse.getResponseCount());
+                updatePlurkResponseSeen(mAccountId, mPlurkId, apiResponse.getResponsesSeen());
                 storeResponse(mAccountId, mPlurkId, responses, true);
                 storeUser(mAccountId, friends, true);
                 publishProgress(new ResponseListResponse(mAccountId, responses));

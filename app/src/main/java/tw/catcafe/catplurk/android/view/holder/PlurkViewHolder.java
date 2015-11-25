@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -110,7 +110,7 @@ public class PlurkViewHolder extends RecyclerView.ViewHolder {
         final int qualifierColorResource = QualifierUtil.getQualifierColorResource(plurk.getQualifier());
         final int qualifierColor = context.getResources().getColor(qualifierColorResource);
         bindProfile(user, application, qualifierColorResource);
-        bindPlurk(plurk, qualifierColor);
+        bindPlurk(plurk, qualifierColor, context);
         bindActionButtons(plurk);
     }
 
@@ -127,7 +127,7 @@ public class PlurkViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    protected void bindPlurk(final Plurk plurk, final int qualifierColor) {
+    protected void bindPlurk(final Plurk plurk, final int qualifierColor, final Context context) {
         // TODO: Configurable displaying local qualifier or poster's qualifier
         final String qualifierDisplayed = StringUtils.isEmpty(plurk.getQualifierTranslated()) ?
                 plurk.getQualifier() : plurk.getQualifierTranslated();
@@ -153,7 +153,7 @@ public class PlurkViewHolder extends RecyclerView.ViewHolder {
                 responseCountRibbonUnder.setColor(colorPlurkMutedRibbonUnder);
                 break;
         }
-        mTime.setText(DateFormat.format("hh:mm", plurk.getPosted()));
+        mTime.setText(DateUtils.formatDateTime(context, plurk.getPosted().getTime(), DateUtils.FORMAT_SHOW_TIME));
     }
 
     protected void bindActionButtons(final Plurk plurk) {

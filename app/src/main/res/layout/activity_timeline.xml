@@ -18,12 +18,13 @@
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:title="@string/app_name"
             android:elevation="@dimen/elevation_app_bar">
-            <com.github.glomadrian.materialanimatedswitch.MaterialAnimatedSwitch
+            <tw.catcafe.catplurk.android.support.widget.SwitchCompat
                 android:id="@+id/pin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_gravity="end"
+                app:iconOn="@drawable/icon_star"
                 app:base_release_color="#b65217"
                 app:ball_release_color="#cf682f"
                 app:icon_release_color="@color/md_white_1000"
